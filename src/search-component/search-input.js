@@ -56,74 +56,71 @@ class _SearchInput extends React.Component {
 
     render() {
         const {name, year_from, year_to, sum_from, sum_to, result, s_name, dispatch} = this.props
-        return (<React.Fragment>
-            <div className="jumbotron text-center">
-                <p>Vyhladavanie:</p>
-                <div className="row search-part">
-                    <div className="col-sm-6">
-                        <div className="row">
-                            <label>
-                                Meno:
+        return (
+            <React.Fragment>
+                <div className="jumbotron text-center">
+                    <p>Vyhladavanie:</p>
+                    <div className="row search-part">
+                        <div className="col-sm-6">
+                            <label className="row">
+                                <span className="col-2">Meno:</span>
                                 <input type="text" value={name}
                                        onChange={(evt) => this.handleOnSearch('NAME', evt.target.value)}/>
                             </label>
-                        </div>
-                        <div className="row">
-                            <label>
-                                Roky:
+                            <label className="row">
+                                <span className="col-2">Roky:</span>
                                 <input className="year" type="number" value={year_from} onChange={(evt) => {
                                     dispatch(createAction('SET_SEARCH_YEAR_FROM', evt.target.value))
                                     this.loadResult()
-                                }}/> -
+                                }}/>&nbsp;-&nbsp;
                                 <input type="number" value={year_to} onChange={(evt) => {
                                     dispatch(createAction('SET_SEARCH_YEAR_TO', evt.target.value))
                                     this.loadResult()
                                 }}/>
                             </label>
-                        </div>
-                        <div className="row">
-                            <label>
-                                Suma:
+                            <label className="row">
+                                <span className="col-2">Suma:</span>
                                 <input type="number" value={sum_from} onChange={(evt) => {
                                     dispatch(createAction('SET_SEARCH_SUM_FROM', evt.target.value))
                                     this.loadResult()
-                                }}/> -
+                                }}/>&nbsp;-&nbsp;
                                 <input type="number" value={sum_to} onChange={(evt) => {
                                     dispatch(createAction('SET_SEARCH_SUM_TO', evt.target.value))
                                     this.loadResult()
                                 }}/>
                             </label>
                         </div>
-                    </div>
-                    <div
-                        className="search-suggestions col-sm-6"
-                        ref={(suggestionNode) => {
-                            this.suggestionNode = suggestionNode
-                        }}
-                    >
-                        {s_name.map(({data: {meno, rok, suma}}) => (
-                            <div className="suggestion" onClick={() => {
-                                dispatch(createAction('SET_SEARCH_NAME', meno))
-                                setTimeout(() => {
-                                    this.debouncedSearch()
-                                })
-                            }}>
-                                {meno} | {rok} | {toCurrency(suma)}
-                            </div>))}
+                        <div
+                            className="search-suggestions col-sm-6"
+                            ref={(suggestionNode) => {
+                                this.suggestionNode = suggestionNode
+                            }}
+                        >
+                            {s_name.map(({data: {meno, rok, suma}}) => (
+                                <div className="suggestion row" onClick={() => {
+                                    dispatch(createAction('SET_SEARCH_NAME', meno))
+                                    setTimeout(() => {
+                                        this.debouncedSearch()
+                                    })
+                                }}>
+                                    <div className="col-sm-6 text-left">{meno}</div>
+                                    <div className="col-sm-2">{rok}</div>
+                                    <div className="col-sm-4 text-right">{toCurrency(suma)}</div>
+                                </div>))}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <pre className="search-results container-fluid text-center">
-                {result.map(({_id, data: {meno, obec, rok, suma}}) => (
-                    <div className="row" key={_id}>
-                        <div className="col-sm-5 text-left">{meno}</div>
-                        <div className="col-sm-3">{`Obec: ${obec}`}</div>
-                        <div className="col-sm-2">{`Rok: ${rok}`}</div>
-                        <div className="col-sm-2">{`Suma: ${toCurrency(suma)}`}</div>
-                    </div>
-                ))}
-            </pre>
-        </React.Fragment>)
+                <pre className="search-results container-fluid text-center">
+                    {result.map(({_id, data: {meno, obec, rok, suma}}) => (
+                        <div className="row" key={_id}>
+                            <div className="col-sm-5 text-left">{meno}</div>
+                            <div className="col-sm-3">{`Obec: ${obec}`}</div>
+                            <div className="col-sm-2">{`Rok: ${rok}`}</div>
+                            <div className="col-sm-2">{`Suma: ${toCurrency(suma)}`}</div>
+                        </div>
+                    ))}
+                    </pre>
+            </React.Fragment>)
     }
 }
 
