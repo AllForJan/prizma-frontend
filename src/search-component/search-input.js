@@ -3,11 +3,10 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import {debounce} from 'lodash'
 import {v4} from 'uuid'
-import echarts from 'echarts'
 import {config} from '../config'
 import {createAction} from "../entries/actions";
 import './search-input.css'
-import ReactEcharts from 'echarts-for-react';
+import {toCurrency} from "../utils/number";
 
 const {api_root} = config
 
@@ -55,81 +54,75 @@ class _SearchInput extends React.Component {
         dispatch(createAction('SET_SEARCH_RESULT', data))
     }
 
-    getOption() {
-        return {
-            title: {
-                text: 'ECharts entry example'
-            },
-            tooltip: {},
-            legend: {
-                data: ['Sales']
-            },
-            xAxis: {},
-            yAxis: {},
-            series: [{
-                name: 'Sales',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-            }]
-        }
-    }
-
     render() {
         const {name, year_from, year_to, sum_from, sum_to, result, s_name, dispatch} = this.props
         return (<React.Fragment>
-            <p>Vyhladavanie:</p>
-            <label>
-                Meno:
-                <input type="text" value={name} onChange={(evt) => this.handleOnSearch('NAME', evt.target.value)}/>
-            </label>
-            <label>
-                Roky:
-                <input className="year" type="number" value={year_from} onChange={(evt) => {
-                    dispatch(createAction('SET_SEARCH_YEAR_FROM', evt.target.value))
-                    this.loadResult()
-                }}/> -
-                <input type="number" value={year_to} onChange={(evt) => {
-                    dispatch(createAction('SET_SEARCH_YEAR_TO', evt.target.value))
-                    this.loadResult()
-                }}/>
-            </label>
-            <label>
-                Suma:
-                <input type="number" value={sum_from} onChange={(evt) => {
-                    dispatch(createAction('SET_SEARCH_SUM_FROM', evt.target.value))
-                    this.loadResult()
-                }}/> -
-                <input type="number" value={sum_to} onChange={(evt) => {
-                    dispatch(createAction('SET_SEARCH_SUM_TO', evt.target.value))
-                    this.loadResult()
-                }}/>
-            </label>
-            <div
-                className="search-suggestions"
-                ref={(suggestionNode) => {
-                    this.suggestionNode = suggestionNode
-                }}
-            >
-                {s_name.map(({data: {meno, rok, suma}}) => (
-                    <div className="suggestion" onClick={() => {
-                        dispatch(createAction('SET_SEARCH_NAME', meno))
-                        setTimeout(() => {
-                            this.debouncedSearch()
-                        })
-                    }}>
-                        {meno} | {rok} | {suma} €
-                    </div>))}
+            <div className="jumbotron text-center">
+                <p>Vyhladavanie:</p>
+                <div className="row search-part">
+                    <div className="col-sm-6">
+                        <div className="row">
+                            <label>
+                                Meno:
+                                <input type="text" value={name}
+                                       onChange={(evt) => this.handleOnSearch('NAME', evt.target.value)}/>
+                            </label>
+                        </div>
+                        <div className="row">
+                            <label>
+                                Roky:
+                                <input className="year" type="number" value={year_from} onChange={(evt) => {
+                                    dispatch(createAction('SET_SEARCH_YEAR_FROM', evt.target.value))
+                                    this.loadResult()
+                                }}/> -
+                                <input type="number" value={year_to} onChange={(evt) => {
+                                    dispatch(createAction('SET_SEARCH_YEAR_TO', evt.target.value))
+                                    this.loadResult()
+                                }}/>
+                            </label>
+                        </div>
+                        <div className="row">
+                            <label>
+                                Suma:
+                                <input type="number" value={sum_from} onChange={(evt) => {
+                                    dispatch(createAction('SET_SEARCH_SUM_FROM', evt.target.value))
+                                    this.loadResult()
+                                }}/> -
+                                <input type="number" value={sum_to} onChange={(evt) => {
+                                    dispatch(createAction('SET_SEARCH_SUM_TO', evt.target.value))
+                                    this.loadResult()
+                                }}/>
+                            </label>
+                        </div>
+                    </div>
+                    <div
+                        className="search-suggestions col-sm-6"
+                        ref={(suggestionNode) => {
+                            this.suggestionNode = suggestionNode
+                        }}
+                    >
+                        {s_name.map(({data: {meno, rok, suma}}) => (
+                            <div className="suggestion" onClick={() => {
+                                dispatch(createAction('SET_SEARCH_NAME', meno))
+                                setTimeout(() => {
+                                    this.debouncedSearch()
+                                })
+                            }}>
+                                {meno} | {rok} | {toCurrency(suma)}
+                            </div>))}
+                    </div>
+                </div>
             </div>
-            <pre className="search-results">
-                {result.map(({_id, data:{meno, rok, suma}}) => (
-                    <React.Fragment key={_id}>
-                        <h1>{meno}</h1>
-                        <p>{`Rok: ${rok}`}, {`Suma: ${suma}`} €</p>
-                        <hr/>
-                    </React.Fragment>
+            <pre className="search-results container-fluid text-center">
+                {result.map(({_id, data: {meno, obec, rok, suma}}) => (
+                    <div className="row" key={_id}>
+                        <div className="col-sm-5 text-left">{meno}</div>
+                        <div className="col-sm-3">{`Obec: ${obec}`}</div>
+                        <div className="col-sm-2">{`Rok: ${rok}`}</div>
+                        <div className="col-sm-2">{`Suma: ${toCurrency(suma)}`}</div>
+                    </div>
                 ))}
             </pre>
-            <ReactEcharts option={this.getOption()}/>
         </React.Fragment>)
     }
 }

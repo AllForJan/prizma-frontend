@@ -12,7 +12,7 @@ class App extends Component {
         const {loading} = this.props
         return (
             <BrowserRouter>
-                <div className={`wrapper ${loading && 'loading'}`}>
+                <div className={`container ${loading && 'loading'}`}>
                     <Switch>
                         <Route path={'/:id'}><DetailComponent/></Route>
                         <Route path={'/'}><SearchInput/></Route>
