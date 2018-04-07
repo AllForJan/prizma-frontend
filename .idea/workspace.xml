@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3560d100-c611-4e71-bba2-7245c330094e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/detail-component/chart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/detail-component/chart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/search-component/search-input.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/search-component/search-input.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/search-component/search-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/search-component/search-input.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -87,8 +82,8 @@
       <file leaf-file-name="search-input.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/search-component/search-input.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="119" column="48" selection-start-line="119" selection-start-column="48" selection-end-line="119" selection-end-column="48" />
+            <state relative-caret-position="102">
+              <caret line="65" column="54" selection-start-line="65" selection-start-column="54" selection-end-line="65" selection-end-column="54" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -273,12 +268,12 @@
       <option name="presentableId" value="Default" />
       <updated>1523088475294</updated>
       <workItem from="1523088492656" duration="21798000" />
-      <workItem from="1523115623408" duration="2433000" />
+      <workItem from="1523115623408" duration="3836000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24231000" />
+    <option name="totallyTimeSpent" value="25634000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -529,8 +524,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/search-component/search-input.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="119" column="48" selection-start-line="119" selection-start-column="48" selection-end-line="119" selection-end-column="48" />
+        <state relative-caret-position="102">
+          <caret line="65" column="54" selection-start-line="65" selection-start-column="54" selection-end-line="65" selection-end-column="54" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
