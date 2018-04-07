@@ -13,21 +13,16 @@ class _SearchInput extends React.Component {
     constructor(props) {
         super(props)
         this.handleOnSearch = this.handleOnSearch.bind(this)
-        this.debouncedSearch = debounce(this.debouncedSearch, 500)
-        this.loadResult = debounce(this.loadResult, 500)
+    }
+
+    componentDidMount() {
+        const {dispatch} = this.props
+        dispatch(createAction('HIDE_SUGGESTION'))
     }
 
     handleOnSearch(field, value) {
         const {dispatch} = this.props
         dispatch(createAction(`SET_SEARCH_${field}`, value))
-        this.debouncedSearch()
-    }
-
-    debouncedSearch() {
-        setTimeout(() => {
-            this.loadSuggestions()
-            this.loadResult()
-        })
     }
 
     async loadSuggestions() {
@@ -54,16 +49,29 @@ class _SearchInput extends React.Component {
     }
 
     render() {
-        const {name, year_from, year_to, sum_from, sum_to, result, s_name, show_advanced, dispatch} = this.props
+        const {name, suggestions_hidden, year_from, year_to, sum_from, sum_to, result, s_name, show_advanced, dispatch} = this.props
         return (
             <React.Fragment>
-
                 <div className="col-md-6 offset-3 search-input">
-                    <input type="text" value={name} className="form-control search-input shadow"
+                    <input ref={(searchInput) => {
+                        this.searchInput = searchInput
+                    }} type="text" value={name} className="form-control search-input shadow"
                            placeholder="Zadajte PO"
-                           onChange={(evt) => this.handleOnSearch('NAME', evt.target.value)}/>
-
-                    <div
+                           onChange={(evt) => {
+                               evt.persist()
+                               this.handleOnSearch('NAME', evt.target.value)
+                               setTimeout((() => {
+                                   evt.target === this.searchInput && this.loadSuggestions()
+                               }).bind(this))
+                           }}
+                           onBlur={() => {
+                               setTimeout(() => {
+                                   this.loadResult()
+                                   dispatch(createAction('HIDE_SUGGESTION'))
+                               }, 200)
+                           }}
+                    />
+                    {suggestions_hidden || <div
                         className="search-suggestions"
                         ref={(suggestionNode) => {
                             this.suggestionNode = suggestionNode
@@ -73,7 +81,8 @@ class _SearchInput extends React.Component {
                             <div className="suggestion" onClick={() => {
                                 dispatch(createAction('SET_SEARCH_NAME', meno))
                                 setTimeout(() => {
-                                    this.debouncedSearch()
+                                    this.loadResult()
+                                    dispatch(createAction('HIDE_SUGGESTION'))
                                 })
                             }}>
                                 {meno}
@@ -81,7 +90,7 @@ class _SearchInput extends React.Component {
                                 {/*<div className="col-sm-2">{rok}</div>*/}
                                 {/*<div className="col-sm-4 text-right">{toCurrency(suma)}</div>*/}
                             </div>))}
-                    </div>
+                    </div>}
 
                 </div>
 
@@ -126,38 +135,39 @@ class _SearchInput extends React.Component {
                 }
 
 
-        {/*list result*/}
-            <div
-        className = "search-results container-fluid text-center" >
-            {result.map(({_id, data: {meno, obec, rok, suma}}) => (
+                {/*list result*/}
+                <div
+                    className="search-results container-fluid text-center">
+                    {result.map(({_id, data: {meno, obec, rok, suma}}) => (
 
-                <div className="row" key={_id}>
+                        <div className="row" key={_id}>
 
-                    <div className="col-sm-5">
-                        <h5>{meno}</h5>
-                    </div>
-                    <div className="col-sm-2">{obec}</div>
-                    <div className="col-sm-2">{rok}</div>
+                            <div className="col-sm-5">
+                                <h5>{meno}</h5>
+                            </div>
+                            <div className="col-sm-2">{obec}</div>
+                            <div className="col-sm-2">{rok}</div>
 
-                    {toCurrency(suma)}
+                            {toCurrency(suma)}
+                        </div>
+                    ))
+                    }
                 </div>
-            ))
-    }
-    </div>
 
-    </React.Fragment>)
+            </React.Fragment>)
     }
-    }
+}
 
-    const searchInputSelector = (state) => ({
-        name: state.searchInput.name || '',
-        year_from: state.searchInput.year_from || '',
-        year_to: state.searchInput.year_to || '',
-        sum_from: state.searchInput.sum_from || '',
-        sum_to: state.searchInput.sum_to || '',
-        result: state.searchInput.result || [],
-        s_name: state.searchInput.s_name || [],
-        show_advanced: state.searchInput.show_advanced || false
-    })
+const searchInputSelector = (state) => ({
+    name: state.searchInput.name || '',
+    year_from: state.searchInput.year_from || '',
+    year_to: state.searchInput.year_to || '',
+    sum_from: state.searchInput.sum_from || '',
+    sum_to: state.searchInput.sum_to || '',
+    result: state.searchInput.result || [],
+    s_name: state.searchInput.s_name || [],
+    show_advanced: state.searchInput.show_advanced || false,
+    suggestions_hidden: state.searchInput.suggestions_hidden,
+})
 
-    export const SearchInput = connect(searchInputSelector)(_SearchInput)
+export const SearchInput = connect(searchInputSelector)(_SearchInput)

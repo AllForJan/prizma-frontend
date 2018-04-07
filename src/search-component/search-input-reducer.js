@@ -13,9 +13,11 @@ export const searchInputReducer = (state = {}, action) => {
         case 'SET_SEARCH_RESULT':
             return {...state, result: action.payload}
         case 'SET_SEARCH_SUGGESTIONS_NAME':
-            return {...state, s_name: action.payload}
+            return {...state, s_name: action.payload, suggestions_hidden: false}
         case 'SET_SHOW_ADVANCED':
             return {...state, show_advanced: action.payload}
+        case 'HIDE_SUGGESTION':
+            return {...state, suggestions_hidden: true}
         default:
             return state
     }
