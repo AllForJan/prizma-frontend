@@ -110,13 +110,17 @@ class _SearchInput extends React.Component {
                         <input className="year" placeholder="Rok od" type="number" value={year_from}
                                onChange={(evt) => {
                                    dispatch(createAction('SET_SEARCH_YEAR_FROM', evt.target.value))
-                                   this.loadResult()
+                                   setTimeout((() => {
+                                       this.loadResult()
+                                   }).bind(this))
                                }}/>
 
                         <input type="number" className="year" placeholder="Rok do" value={year_to}
                                onChange={(evt) => {
                                    dispatch(createAction('SET_SEARCH_YEAR_TO', evt.target.value))
-                                   this.loadResult()
+                                   setTimeout((() => {
+                                       this.loadResult()
+                                   }).bind(this))
                                }}/>
                     </div>
 
@@ -124,11 +128,15 @@ class _SearchInput extends React.Component {
 
                         <input type="number" value={sum_from} onChange={(evt) => {
                             dispatch(createAction('SET_SEARCH_SUM_FROM', evt.target.value))
-                            this.loadResult()
+                            setTimeout((() => {
+                                this.loadResult()
+                            }).bind(this))
                         }}/>
                         <input type="number" value={sum_to} onChange={(evt) => {
                             dispatch(createAction('SET_SEARCH_SUM_TO', evt.target.value))
-                            this.loadResult()
+                            setTimeout((() => {
+                                this.loadResult()
+                            }).bind(this))
                         }}/>
                     </div>
                 </div>
