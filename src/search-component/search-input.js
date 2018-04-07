@@ -54,83 +54,110 @@ class _SearchInput extends React.Component {
     }
 
     render() {
-        const {name, year_from, year_to, sum_from, sum_to, result, s_name, dispatch} = this.props
+        const {name, year_from, year_to, sum_from, sum_to, result, s_name, show_advanced, dispatch} = this.props
         return (
             <React.Fragment>
-                <div className="jumbotron text-center">
-                    <p>Vyhladavanie:</p>
-                    <div className="row search-part">
-                        <div className="col-sm-6">
-                            <label className="row">
-                                <span className="col-2">Meno:</span>
-                                <input type="text" value={name}
-                                       onChange={(evt) => this.handleOnSearch('NAME', evt.target.value)}/>
-                            </label>
-                            <label className="row">
-                                <span className="col-2">Roky:</span>
-                                <input className="year" type="number" value={year_from} onChange={(evt) => {
-                                    dispatch(createAction('SET_SEARCH_YEAR_FROM', evt.target.value))
-                                    this.loadResult()
-                                }}/>&nbsp;-&nbsp;
-                                <input type="number" value={year_to} onChange={(evt) => {
-                                    dispatch(createAction('SET_SEARCH_YEAR_TO', evt.target.value))
-                                    this.loadResult()
-                                }}/>
-                            </label>
-                            <label className="row">
-                                <span className="col-2">Suma:</span>
-                                <input type="number" value={sum_from} onChange={(evt) => {
-                                    dispatch(createAction('SET_SEARCH_SUM_FROM', evt.target.value))
-                                    this.loadResult()
-                                }}/>&nbsp;-&nbsp;
-                                <input type="number" value={sum_to} onChange={(evt) => {
-                                    dispatch(createAction('SET_SEARCH_SUM_TO', evt.target.value))
-                                    this.loadResult()
-                                }}/>
-                            </label>
-                        </div>
-                        <div
-                            className="search-suggestions col-sm-6"
-                            ref={(suggestionNode) => {
-                                this.suggestionNode = suggestionNode
-                            }}
-                        >
-                            {s_name.map(({data: {meno, rok, suma}}) => (
-                                <div className="suggestion row" onClick={() => {
-                                    dispatch(createAction('SET_SEARCH_NAME', meno))
-                                    setTimeout(() => {
-                                        this.debouncedSearch()
-                                    })
-                                }}>
-                                    <div className="col-sm-6 text-left">{meno}</div>
-                                    <div className="col-sm-2">{rok}</div>
-                                    <div className="col-sm-4 text-right">{toCurrency(suma)}</div>
-                                </div>))}
-                        </div>
+
+                <div className="col-md-6 offset-3 search-input">
+                    <input type="text" value={name} className="form-control search-input shadow"
+                           placeholder="Zadajte PO"
+                           onChange={(evt) => this.handleOnSearch('NAME', evt.target.value)}/>
+
+                    <div
+                        className="search-suggestions"
+                        ref={(suggestionNode) => {
+                            this.suggestionNode = suggestionNode
+                        }}
+                    >
+                        {s_name.map(({data: {meno, rok, suma}}) => (
+                            <div className="suggestion" onClick={() => {
+                                dispatch(createAction('SET_SEARCH_NAME', meno))
+                                setTimeout(() => {
+                                    this.debouncedSearch()
+                                })
+                            }}>
+                                {meno}
+                                {/*<div className="col-sm-6 text-left">{meno}</div>*/}
+                                {/*<div className="col-sm-2">{rok}</div>*/}
+                                {/*<div className="col-sm-4 text-right">{toCurrency(suma)}</div>*/}
+                            </div>))}
+                    </div>
+
+                </div>
+
+                <div className="col-md-6 offset-6">
+                    <button type="button" className="btn btn-light" onClick={() => {
+                        dispatch(createAction('SET_SHOW_ADVANCED', !show_advanced))
+                    }}>
+                        {show_advanced ? '▲' : '▼'}
+                    </button>
+                </div>
+
+                {this.props.show_advanced &&
+                <div className="row animated fadeInDown text-center">
+
+                    <div className="row col-md-6">
+
+                        <input className="year" placeholder="Rok od" type="number" value={year_from}
+                               onChange={(evt) => {
+                                   dispatch(createAction('SET_SEARCH_YEAR_FROM', evt.target.value))
+                                   this.loadResult()
+                               }}/>
+
+                        <input type="number" className="year" placeholder="Rok do" value={year_to}
+                               onChange={(evt) => {
+                                   dispatch(createAction('SET_SEARCH_YEAR_TO', evt.target.value))
+                                   this.loadResult()
+                               }}/>
+                    </div>
+
+                    <div className="col-md-6">
+
+                        <input type="number" value={sum_from} onChange={(evt) => {
+                            dispatch(createAction('SET_SEARCH_SUM_FROM', evt.target.value))
+                            this.loadResult()
+                        }}/>
+                        <input type="number" value={sum_to} onChange={(evt) => {
+                            dispatch(createAction('SET_SEARCH_SUM_TO', evt.target.value))
+                            this.loadResult()
+                        }}/>
                     </div>
                 </div>
-                <pre className="search-results container-fluid text-center">
-                    {result.map(({_id, data: {meno, obec, rok, suma}}) => (
-                        <div className="row" key={_id}>
-                            <div className="col-sm-5 text-left">{meno}</div>
-                            <div className="col-sm-3">{`Obec: ${obec}`}</div>
-                            <div className="col-sm-2">{`Rok: ${rok}`}</div>
-                            <div className="col-sm-2">{`Suma: ${toCurrency(suma)}`}</div>
-                        </div>
-                    ))}
-                    </pre>
-            </React.Fragment>)
+                }
+
+
+        {/*list result*/}
+            <div
+        className = "search-results container-fluid text-center" >
+            {result.map(({_id, data: {meno, obec, rok, suma}}) => (
+
+                <div className="row" key={_id}>
+
+                    <div className="col-sm-5">
+                        <h5>{meno}</h5>
+                    </div>
+                    <div className="col-sm-2">{obec}</div>
+                    <div className="col-sm-2">{rok}</div>
+
+                    {toCurrency(suma)}
+                </div>
+            ))
     }
-}
+    </div>
 
-const searchInputSelector = (state) => ({
-    name: state.searchInput.name || '',
-    year_from: state.searchInput.year_from || '',
-    year_to: state.searchInput.year_to || '',
-    sum_from: state.searchInput.sum_from || '',
-    sum_to: state.searchInput.sum_to || '',
-    result: state.searchInput.result || [],
-    s_name: state.searchInput.s_name || [],
-})
+    </React.Fragment>)
+    }
+    }
 
-export const SearchInput = connect(searchInputSelector)(_SearchInput)
+    const searchInputSelector = (state) => ({
+        name: state.searchInput.name || '',
+        year_from: state.searchInput.year_from || '',
+        year_to: state.searchInput.year_to || '',
+        sum_from: state.searchInput.sum_from || '',
+        sum_to: state.searchInput.sum_to || '',
+        result: state.searchInput.result || [],
+        s_name: state.searchInput.s_name || [],
+        show_advanced: state.searchInput.show_advanced || false
+    })
+
+    export const SearchInput = connect(searchInputSelector)(_SearchInput)
