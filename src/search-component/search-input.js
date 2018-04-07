@@ -121,8 +121,8 @@ class _SearchInput extends React.Component {
                     </div>))}
             </div>
             <pre className="search-results">
-                {result.map(({data:{meno, rok, suma}}) => (
-                    <React.Fragment key={v4()}>
+                {result.map(({_id, data:{meno, rok, suma}}) => (
+                    <React.Fragment key={_id}>
                         <h1>{meno}</h1>
                         <p>{`Rok: ${rok}`}, {`Suma: ${suma}`} €</p>
                         <hr/>
