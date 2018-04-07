@@ -2,11 +2,10 @@ import React from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import {debounce} from 'lodash'
-import {v4} from 'uuid'
 import {config} from '../config'
 import {createAction} from "../entries/actions";
-import './search-input.css'
 import {toCurrency} from "../utils/number";
+import './search-input.css'
 
 const {api_root} = config
 

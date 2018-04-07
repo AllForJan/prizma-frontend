@@ -4,6 +4,7 @@ export const loaderReducer = (state=0,action) => {
             return state+1
         case 'LOADER_END':
             return state-1
+        default:
+            return state
     }
-    return state
 }
