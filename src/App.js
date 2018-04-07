@@ -1,19 +1,24 @@
 import React, {Component} from 'react';
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import {connect} from 'react-redux'
+import {} from 'react-router'
 import {SearchInput} from './search-component/search-input'
-import './App.css';
+import './App.css'
+
 
 class App extends Component {
-
-
     render() {
+        const {loading} = this.props
         return (
-            <div className="App">
+            <div className={`wrapper ${loading && 'loading'}`}>
                 <SearchInput/>
             </div>
         );
     }
 }
 
-export default App;
+
+export default connect((state) => {
+    return ({
+        loading: !!state.loading,
+    })
+})(App);

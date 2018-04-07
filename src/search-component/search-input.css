@@ -1,0 +1,10 @@
+.search-suggestions,.search-results {
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    vertical-align: top;
+}
+.suggestion {
+    cursor: pointer;
+    text-decoration: underline;
+}
