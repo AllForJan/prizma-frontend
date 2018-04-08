@@ -18,13 +18,17 @@ class _DetailComponent extends React.Component {
 
     render() {
         const {subsidiesPerYear, requestsPerYear, records, requests} = this.props
+        const mainName = records[0] && records[0].meno
         return <div className="container">
-            <div className="row">
-                <div className="col-6">
-                    <Chart chartData={subsidiesPerYear}/>
-                </div>
-                <div className="col-6">
-                    <Chart chartData={requestsPerYear}/>
+            <div className="jumbotron">
+                {mainName && <h1 className="text-center">{mainName}</h1>}
+                <div className="row">
+                    <div className="col-6">
+                        <Chart chartData={subsidiesPerYear}/>
+                    </div>
+                    <div className="col-6">
+                        <Chart chartData={requestsPerYear}/>
+                    </div>
                 </div>
             </div>
             <Map/>
