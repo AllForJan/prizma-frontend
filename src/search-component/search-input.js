@@ -3,6 +3,7 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import {debounce} from 'lodash'
 import {config} from '../config'
+import {Link} from 'react-router-dom'
 import {createAction} from "../entries/actions";
 import {toCurrency} from "../utils/number";
 import './search-input.css'
@@ -146,18 +147,19 @@ class _SearchInput extends React.Component {
                 {/*list result*/}
                 <div
                     className="search-results container-fluid text-center">
-                    {result.map(({_id, data: {meno, obec, rok, suma}}) => (
+                    {result.map(({_id, data: {meno, obec, rok, suma, custom_id}}) => (
 
-                        <div className="row" key={_id}>
+                        <Link to={`/${custom_id}`}>
+                            <div className="row" key={_id}>
+                                <div className="col-sm-5">
+                                    <h5>{meno}</h5>
+                                </div>
+                                <div className="col-sm-2">{obec}</div>
+                                <div className="col-sm-2">{rok}</div>
 
-                            <div className="col-sm-5">
-                                <h5>{meno}</h5>
+                                {toCurrency(suma)}
                             </div>
-                            <div className="col-sm-2">{obec}</div>
-                            <div className="col-sm-2">{rok}</div>
-
-                            {toCurrency(suma)}
-                        </div>
+                        </Link>
                     ))
                     }
                 </div>

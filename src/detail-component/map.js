@@ -1,27 +1,42 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {config} from '../config'
 
 const {google_api_key} = config
 
 class _Map extends React.Component {
-    componentDidMount() {
-        window.initMap = () => {
-            window.map = new window.google.maps.Map(document.getElementById('map'), {
-                zoom: 7.5,
-                center: {lat: 48.7, lng: 20}
-            });
-
-            window.map.data.loadGeoJson('http://ppa.tools.bratia.sk/?parts=%C3%81belov%C3%A1:7009/1%7C4201/1,Zvala:7801/1%7C9605/1');
+    shouldComponentUpdate(nextProps) {
+        if (this.props.url !== nextProps.url) {
+            return true
         }
-        const script = document.createElement('script')
-        script.type = "text/javascript"
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&callback=initMap`
-        document.querySelector('head').appendChild(script);
+        return false
+    }
+
+    execute() {
+        const {url} = this.props
+        if (url) {
+            window.initMap = () => {
+                window.map = new window.google.maps.Map(document.getElementById('map'), {
+                    zoom: 7.5,
+                    center: {lat: 48.7, lng: 20}
+                });
+
+                window.map.data.loadGeoJson(url);
+            }
+            const script = document.createElement('script')
+            script.type = "text/javascript"
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&callback=initMap`
+            document.querySelector('head').appendChild(script);
+        }
     }
 
     render() {
+        this.execute()
         return <div id="map" style={{height: '400px'}}/>
     }
 }
 
-export const Map = _Map
+const mapSelector = (state) => ({
+    url: state.detail.user && state.detail.user.url_diely
+})
+export const Map = connect(mapSelector)(_Map)

@@ -1,37 +1,39 @@
 import React, {Component} from 'react'
-import {withRouter} from 'react-router'
 import ReactEcharts from 'echarts-for-react';
 
 class _Chart extends Component {
     componentDidMount() {
-
     }
 
     getOption() {
+        const {chartData} = this.props
         return {
             title: {
-                text: 'ECharts entry example'
+                text: chartData.legend
             },
             tooltip: {},
             legend: {
-                data: ['Sales']
+                data: ['bar']
             },
-            xAxis: {},
+            xAxis: {
+                name: 'bar',
+                data: chartData.xLegend || []
+            },
             yAxis: {},
             series: [{
-                name: 'Sales',
+                name: 'bar',
                 type: 'bar',
-                data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                data: chartData.values || []
             }]
         }
     }
 
     render() {
-        return <React.Fragment>
-            <h1>Hello! {this.props.match.params.id}</h1>
-            <ReactEcharts option={this.getOption()}/>
-        </React.Fragment>
+        const {chartData} = this.props
+        return chartData ? <ReactEcharts option={this.getOption()}/> : null
     }
 }
 
-export const Chart = withRouter(_Chart)
+
+
+export const Chart = _Chart
