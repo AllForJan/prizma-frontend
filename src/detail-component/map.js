@@ -7,11 +7,11 @@ class _Map extends React.Component {
     componentDidMount() {
         window.initMap = () => {
             window.map = new window.google.maps.Map(document.getElementById('map'), {
-                zoom: 4,
-                center: {lat: -28, lng: 137}
+                zoom: 7.5,
+                center: {lat: 48.7, lng: 20}
             });
 
-            window.map.data.loadGeoJson('https://storage.googleapis.com/mapsdevsite/json/google.json');
+            window.map.data.loadGeoJson('http://ppa.tools.bratia.sk/?parts=%C3%81belov%C3%A1:7009/1%7C4201/1,Zvala:7801/1%7C9605/1');
         }
         const script = document.createElement('script')
         script.type = "text/javascript"
