@@ -24,6 +24,7 @@ class _Map extends React.Component {
                 window.map.data.loadGeoJson(url);
             }
             const script = document.createElement('script')
+            script.async = true
             script.type = "text/javascript"
             script.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&callback=initMap`
             document.querySelector('head').appendChild(script);
@@ -31,8 +32,9 @@ class _Map extends React.Component {
     }
 
     render() {
+        const {url} = this.props
         this.execute()
-        return <div id="map" style={{height: '400px'}}/>
+        return <div id="map" style={url ? {height: '400px'} : {}}/>
     }
 }
 

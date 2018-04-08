@@ -17,7 +17,7 @@ class _DetailComponent extends React.Component {
     }
 
     render() {
-        const {subsidiesPerYear, requestsPerYear} = this.props
+        const {subsidiesPerYear, requestsPerYear, records} = this.props
         return <div className="container">
             <div className="row">
                 <div className="col-6">
@@ -28,6 +28,29 @@ class _DetailComponent extends React.Component {
                 </div>
             </div>
             <Map/>
+            <table className="table">
+                <thead>
+                <caption className="text-center w-100">Žiadosti</caption>
+                <tr>
+                    <th>Meno</th>
+                    <th>Opatrenie</th>
+                    <th>Kód opatrenia</th>
+                    <th>PSČ</th>
+                    <th>Rok</th>
+                    <th>Suma</th>
+                </tr>
+                </thead>
+                <tbody>
+                {records.map(({meno, opatrenie, opatrenie_kod, psc, rok, suma}) => <tr>
+                    <td>{meno}</td>
+                    <td>{opatrenie}</td>
+                    <td>{opatrenie_kod}</td>
+                    <td>{psc}</td>
+                    <td>{rok}</td>
+                    <td>{suma}</td>
+                </tr>)}
+                </tbody>
+            </table>
         </div>
     }
 }
@@ -37,7 +60,8 @@ const detailComponentSelector = (state) => {
     if (!user) {
         return {
             subsidiesPerYear: null,
-            requestsPerYear: null
+            requestsPerYear: null,
+            records: [],
         }
     }
     return ({
@@ -50,7 +74,8 @@ const detailComponentSelector = (state) => {
             legend: 'Ziadosti',
             xLegend: user.ziadosti_stats.roky,
             values: user.ziadosti_stats.pocet
-        }
+        },
+        records: user.prijimatel_records || []
     })
 }
 export const DetailComponent = withRouter(connect(detailComponentSelector)(_DetailComponent))
