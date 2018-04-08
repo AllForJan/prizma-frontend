@@ -17,7 +17,7 @@ class _DetailComponent extends React.Component {
     }
 
     render() {
-        const {subsidiesPerYear, requestsPerYear, records} = this.props
+        const {subsidiesPerYear, requestsPerYear, records, requests} = this.props
         return <div className="container">
             <div className="row">
                 <div className="col-6">
@@ -30,7 +30,7 @@ class _DetailComponent extends React.Component {
             <Map/>
             <table className="table">
                 <thead>
-                <caption className="text-center w-100">Žiadosti</caption>
+                <caption className="text-center w-100">Prijmy</caption>
                 <tr>
                     <th>Meno</th>
                     <th>Opatrenie</th>
@@ -51,6 +51,30 @@ class _DetailComponent extends React.Component {
                 </tr>)}
                 </tbody>
             </table>
+
+            <table className="table">
+                <thead>
+                <caption className="text-center w-100">Žiadosti</caption>
+                <tr>
+                    <th>Diel</th>
+                    <th>IČO</th>
+                    <th>Lokalita</th>
+                    <th>Meno</th>
+                    <th>Rok</th>
+                    <th>Výmera</th>
+                </tr>
+                </thead>
+                <tbody>
+                {requests.map(({diel, ico, lokalita, meno, rok, vymera}) => <tr>
+                    <td>{diel}</td>
+                    <td>{ico}</td>
+                    <td>{lokalita}</td>
+                    <td>{meno}</td>
+                    <td>{rok}</td>
+                    <td>{vymera}</td>
+                </tr>)}
+                </tbody>
+            </table>
         </div>
     }
 }
@@ -62,6 +86,7 @@ const detailComponentSelector = (state) => {
             subsidiesPerYear: null,
             requestsPerYear: null,
             records: [],
+            requests: [],
         }
     }
     return ({
@@ -75,7 +100,8 @@ const detailComponentSelector = (state) => {
             xLegend: user.ziadosti_stats.roky,
             values: user.ziadosti_stats.pocet
         },
-        records: user.prijimatel_records || []
+        records: user.prijimatel_records || [],
+        requests: user.prijimatel_ziadosti || [],
     })
 }
 export const DetailComponent = withRouter(connect(detailComponentSelector)(_DetailComponent))
