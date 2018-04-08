@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {Chart} from "./chart";
 import {Map} from "./map";
 import {createAction} from '../entries/actions'
+import {toCurrency} from '../utils/number'
 import {config} from '../config'
 
 const {api_root} = config
@@ -51,7 +52,7 @@ class _DetailComponent extends React.Component {
                     <td>{opatrenie_kod}</td>
                     <td>{psc}</td>
                     <td>{rok}</td>
-                    <td>{suma}</td>
+                    <td>{toCurrency(suma)}</td>
                 </tr>)}
                 </tbody>
             </table>
@@ -98,11 +99,15 @@ const detailComponentSelector = (state) => {
             legend: 'Prijmy',
             xLegend: state.detail.user.prijimatel_roky.roky,
             values: state.detail.user.prijimatel_roky.sumy,
+            legendName: "Suma v €",
+            seriesName: "Suma v €",
         },
         requestsPerYear: user.ziadosti_stats && {
-            legend: 'Ziadosti',
+            legend: 'Žiadosti',
             xLegend: user.ziadosti_stats.roky,
-            values: user.ziadosti_stats.pocet
+            values: user.ziadosti_stats.pocet,
+            legendName: 'Počet žiadostí',
+            seriesName: 'Počet žiadostí',
         },
         records: user.prijimatel_records || [],
         requests: user.prijimatel_ziadosti || [],

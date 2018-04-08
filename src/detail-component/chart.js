@@ -13,15 +13,15 @@ class _Chart extends Component {
             },
             tooltip: {},
             legend: {
-                data: ['bar']
+                data: [chartData.legendName||'']
             },
             xAxis: {
-                name: 'bar',
+                name: chartData.xLegendName || '',
                 data: chartData.xLegend || []
             },
             yAxis: {},
             series: [{
-                name: 'bar',
+                name: chartData.seriesName || '',
                 type: 'bar',
                 data: chartData.values || []
             }]
